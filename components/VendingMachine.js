@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import VendingMachineOption from '../components/VendingMachineOption'; // Corrected import path
+import VendingMachineOption from './VendingMachineOption';
 
 export default function VendingMachine({ initialDrinks }) {
   const [selected, setSelected] = useState(null);
