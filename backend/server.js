@@ -1,18 +1,14 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const Drink = require("./models/Drink"); // Import the Drink model
-const Snack = require("./models/Snack"); // Import the Snack model
-
+const connectDB = require("./database");
 const drinkRoutes = require("./routes/drinks");
+const snackRoutes = require("./routes/snacks");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-app.use("/api/drinks", drinkRoutes);
 
 // Middleware
 app.use(express.json());
@@ -22,37 +18,27 @@ app.use(
   })
 );
 
-// Database connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Database connection error:", err));
-
-// Routes
-// app.get("/api/drinks", async (req, res) => {
-//   try {
-//     console.log("Fetching drinks from the database...");
-//     const drinks = await Drink.find(); // Fetch all drinks from the database
-//     console.log("Drinks fetched successfully:", drinks);
-//     res.json(drinks);
-//   } catch (err) {
-//     console.error("Error fetching drinks:", err);
-//     res.status(500).json({ message: "Failed to fetch drinks" });
-//   }
-// });
-
-app.get("/api/snacks", async (req, res) => {
-  try {
-    const snacks = await Snack.find(); // Fetch all snacks from the database
-    res.json(snacks);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch snacks" });
-  }
+// Debug: Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Routes
+app.use("/api/drinks", drinkRoutes);
+app.use("/api/snacks", snackRoutes);
+
+// Connect to DB and start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch((err) => {
+  console.error("Failed to connect to database:", err);
+  process.exit(1);
 });
