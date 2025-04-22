@@ -14,7 +14,19 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow requests from the frontend
+    // Allow requests from any localhost port (e.g., 3000, 3001, etc.)
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow non-browser requests
+      // Allow localhost on any port, or 127.0.0.1
+      if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+        return callback(null, true);
+      }
+      // Optionally allow other origins, e.g., for production
+      // if (/^https:\/\/your-production-domain\.com$/.test(origin)) {
+      //   return callback(null, true);
+      // }
+      return callback(new Error('Not allowed by CORS'));
+    },
   })
 );
 

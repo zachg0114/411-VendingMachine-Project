@@ -32,7 +32,7 @@ export default function ShoppingCart({
 
   return (
     <div
-      className="fixed top-6 right-8 z-50 flex items-center"
+      className="fixed top-0 right-8 z-50 flex items-center"
       ref={cartRef}
       style={{ minWidth: 56 }}
     >
@@ -51,10 +51,19 @@ export default function ShoppingCart({
         )}
       </button>
       {cartOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+        <div
+          className="absolute right-0 mt-4 w-80 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
+          style={{ top: 0, maxHeight: 'calc(100vh - 32px)', marginTop: '0.5rem' }}
+        >
           <div className="p-4 border-b border-gray-200 font-bold flex justify-between items-center bg-yellow-100">
             <span>Shopping Cart</span>
-            <Button size="sm" color="danger" variant="light" onClick={handleClearCart}>
+            <Button
+              size="sm"
+              color="danger"
+              variant="light"
+              onClick={handleClearCart}
+              disabled={cartSummary.length === 0}
+            >
               Clear
             </Button>
           </div>
