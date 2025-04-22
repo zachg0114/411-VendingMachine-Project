@@ -1,33 +1,19 @@
-require('dotenv').config();
-console.log('database.js loaded'); // Debug: module loaded
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-if (!process.env.MONGO_URI) {
-  console.error('MONGO_URI is not defined in environment variables!');
-  process.exit(1);
-}
+dotenv.config();
 
-mongoose.connection.on('open', () => {
-  console.log('Mongoose event: connection open');
-});
-mongoose.connection.on('error', (err) => {
-  console.error('Mongoose event: connection error', err);
-});
-
-const connectToDatabase = async () => {
-  console.log('Attempting to connect to MongoDB...'); // Debug: connection attempt started
-  try {
-    const connection = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // fail faster if no connection
-    });
-    console.log('MongoDB connection established:', connection.connection.host);
-    return connection;
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    throw error; // Ensure the error propagates to the caller
-  }
+const connectDB = async () => {
+	try {
+		await mongoose.connect(process.env.MONGO_URI, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+		console.log('MongoDB connected successfully');
+	} catch (err) {
+		console.error('MongoDB connection failed:', err);
+		process.exit(1);
+	}
 };
 
-module.exports = connectToDatabase;
+module.exports = connectDB;

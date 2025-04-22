@@ -1,22 +1,51 @@
-require('dotenv').config(); // Add this line at the top
 const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cors = require('cors');
-const connectToDatabase = require('./database');
+const Drink = require('./models/Drink'); // Import the Drink model
+const Snack = require('./models/Snack'); // Import the Snack model
 
-const startServer = async () => {
-  try {
-    await connectToDatabase(); // Ensure the database connection is established
-    const app = express();
-    app.use(cors()); // Allow all origins
-    app.use(express.json());
+dotenv.config();
 
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server running on port ${process.env.PORT || 3000}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error.message);
-    process.exit(1); // Exit the process if the server cannot start
-  }
-};
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-startServer();
+// Middleware
+app.use(express.json());
+app.use(cors({
+	origin: 'http://localhost:3000', // Allow requests from the frontend
+}));
+
+// Database connection
+mongoose.connect(process.env.MONGO_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+})
+	.then(() => console.log('Connected to MongoDB'))
+	.catch((err) => console.error('Database connection error:', err));
+
+// Routes
+app.get('/api/drinks', async (req, res) => {
+	try {
+		console.log('Fetching drinks from the database...');
+		const drinks = await Drink.find(); // Fetch all drinks from the database
+		console.log('Drinks fetched successfully:', drinks);
+		res.json(drinks);
+	} catch (err) {
+		console.error('Error fetching drinks:', err);
+		res.status(500).json({ message: 'Failed to fetch drinks' });
+	}
+});
+
+app.get('/api/snacks', async (req, res) => {
+	try {
+		const snacks = await Snack.find(); // Fetch all snacks from the database
+		res.json(snacks);
+	} catch (err) {
+		res.status(500).json({ message: 'Failed to fetch snacks' });
+	}
+});
+
+app.listen(PORT, () => {
+	console.log(`Server running on port ${PORT}`);
+});
