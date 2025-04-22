@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "node backend/server.js"
   },
   "dependencies": {
     "body-parser": "^2.2.0",

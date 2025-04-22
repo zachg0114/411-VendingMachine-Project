@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const snackSchema = new mongoose.Schema({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	price: { type: Number, required: true },
+  id: { type: Number, required: true },
+  name: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  price: { type: Number, required: true },
 });
 
-module.exports = mongoose.model('Snack', snackSchema);
+module.exports = mongoose.model("Snack", snackSchema, "snacks");
