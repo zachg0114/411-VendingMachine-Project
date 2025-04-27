@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
-import "./toast.css"; // Import CSS for consistent styling
+import { motion, AnimatePresence } from "framer-motion";
+import "./toast.css";
 
 const ToastContext = createContext();
 
@@ -12,7 +12,7 @@ export function ToastProvider({ children }) {
     setToasts((prev) => [...prev, { id, message }]);
     setTimeout(() => {
       removeToast(id);
-    }, 5000); // Toast lasts for 5 seconds
+    }, 5000);
   };
 
   const removeToast = (id) => {
