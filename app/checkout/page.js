@@ -10,6 +10,7 @@ export default function CheckoutPage() {
   const subtotal = cartSummary.reduce((sum, item) => sum + item.price * item.count, 0);
   const salesTax = subtotal * 0.05;
   const total = subtotal + salesTax;
+  const totalItems = cartSummary.reduce((sum, item) => sum + item.count, 0); // Calculate total items
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-b from-gray-900 to-black text-white p-6">
@@ -20,8 +21,11 @@ export default function CheckoutPage() {
         &larr; Back to Home
       </button>
       <div className="w-full max-w-4xl border border-gray-700 rounded-3xl shadow-2xl px-8 py-10 bg-gradient-to-br from-gray-800 to-black mt-20">
-        <h1 className="text-4xl font-bold text-yellow-400 text-center mb-8">Checkout</h1>
-        <div className="p-4 max-h-72 overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-4xl font-bold text-yellow-400">Checkout</h1>
+          <span className="text-sm text-gray-400">Total Items: {totalItems}</span> {/* Item total */}
+        </div>
+        <div className="p-4">
           {cartSummary.length === 0 ? (
             <div className="text-gray-500 text-center py-8">Your cart is empty.</div>
           ) : (
@@ -60,6 +64,12 @@ export default function CheckoutPage() {
             <span className="font-bold text-xl text-yellow-600">${total.toFixed(2)}</span>
           </div>
         </div>
+        <button
+          className="w-full mt-4 bg-yellow-500 text-black font-bold py-3 rounded-lg hover:bg-yellow-400 transition-colors"
+          onClick={() => {}} // Placeholder for functionality
+        >
+          Place Order
+        </button>
       </div>
     </div>
   );
