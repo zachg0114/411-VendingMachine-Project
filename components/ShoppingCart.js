@@ -28,7 +28,7 @@ export default function ShoppingCart({
   }, [cartOpen, setCartOpen]);
 
   // Calculate total price
-  const total = cartSummary.reduce((sum, item) => sum + item.price * item.count, 0);
+  const total = (cartSummary || []).reduce((sum, item) => sum + item.price * item.count, 0);
 
   return (
     <div
@@ -44,7 +44,7 @@ export default function ShoppingCart({
       >
         <span role="img" aria-label="cart">🛒</span>
         {/* Show unique item count */}
-        {cartSummary.length > 0 && (
+        {cartSummary?.length > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs font-bold border-2 border-white">
             {cartSummary.length}
           </span>
