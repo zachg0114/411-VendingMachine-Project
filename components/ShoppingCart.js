@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation"; // Import Next.js router
 
 export default function ShoppingCart({
   cart,
@@ -9,9 +10,9 @@ export default function ShoppingCart({
   cartSummary,
   handleRemoveFromCart,
   handleClearCart,
-  handleCheckout,
 }) {
   const cartRef = useRef(null);
+  const router = useRouter(); // Initialize router
 
   // Close cart dropdown when clicking outside
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function ShoppingCart({
               color="primary"
               className="w-full font-bold"
               disabled={cartSummary.length === 0}
-              onClick={handleCheckout}
+              onClick={() => router.push("/checkout")} // Navigate to the checkout page
             >
               Checkout
             </Button>
