@@ -105,13 +105,13 @@ export default function ShoppingCart({
               ))
             )}
           </div>
-          <div className="p-4 border-t border-gray-200 bg-yellow-50">
-            <div className="flex justify-between items-center mb-3">
-              <span className="font-semibold">Total:</span>
-              <span className="font-bold text-lg">
-                ${cartSummary.reduce((sum, item) => sum + item.price * item.count, 0).toFixed(2)}
-              </span>
-            </div>
+          <div className="p-4 border-t border-gray-200 bg-yellow-50 flex justify-between">
+            <Button
+              size="sm"
+              onClick={() => router.push("/orders")} // Navigate to the Orders page
+            >
+              Retrieve Previous Order
+            </Button>
             <Button
               color="primary"
               className="w-full font-bold"
