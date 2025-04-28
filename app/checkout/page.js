@@ -5,12 +5,41 @@ import { useShoppingCart } from "../../context/ShoppingCartContext";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cartSummary } = useShoppingCart();
+  const { cartSummary, clearCart } = useShoppingCart();
 
   const subtotal = cartSummary.reduce((sum, item) => sum + item.price * item.count, 0);
   const salesTax = subtotal * 0.05;
   const total = subtotal + salesTax;
-  const totalItems = cartSummary.reduce((sum, item) => sum + item.count, 0); // Calculate total items
+  const totalItems = cartSummary.reduce((sum, item) => sum + item.count, 0);
+
+  const handlePlaceOrder = async () => {
+    try {
+      const orderData = {
+        total,
+        snackIds: cartSummary.filter((item) => item.type === "snack").map((item) => item.id),
+        drinkIds: cartSummary.filter((item) => item.type === "drink").map((item) => item.id),
+        address: "123 Example St",
+        date: new Date().toISOString(),
+      };
+
+      const saveResponse = await fetch("http://localhost:5000/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!saveResponse.ok) {
+        throw new Error("Failed to save the order");
+      }
+
+      clearCart();
+      alert("Order placed successfully!");
+      router.push("/");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place the order. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-b from-gray-900 to-black text-white p-6">
@@ -23,7 +52,7 @@ export default function CheckoutPage() {
       <div className="w-full max-w-4xl border border-gray-700 rounded-3xl shadow-2xl px-8 py-10 bg-gradient-to-br from-gray-800 to-black mt-20">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl font-bold text-yellow-400">Checkout</h1>
-          <span className="text-sm text-gray-400">Total Items: {totalItems}</span> {/* Item total */}
+          <span className="text-sm text-gray-400">Total Items: {totalItems}</span>
         </div>
         <div className="p-4">
           {cartSummary.length === 0 ? (
@@ -36,7 +65,7 @@ export default function CheckoutPage() {
               >
                 <div className="flex items-center">
                   <img
-                    src={item.image} // Display the image address correctly
+                    src={item.image}
                     alt={item.name}
                     className="w-12 h-12 object-cover rounded-lg mr-4"
                   />
@@ -66,7 +95,7 @@ export default function CheckoutPage() {
         </div>
         <button
           className="w-full mt-4 bg-yellow-500 text-black font-bold py-3 rounded-lg hover:bg-yellow-400 transition-colors"
-          onClick={() => {}} // Placeholder for functionality
+          onClick={handlePlaceOrder}
         >
           Place Order
         </button>
