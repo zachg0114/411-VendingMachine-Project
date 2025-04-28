@@ -31,7 +31,7 @@ export default function VendingMachineOption({
               <span className="font-bold text-xl">{item.name}</span>
               <span className="text-gray-300">Qty: {item.quantity}</span>
               <span className="text-yellow-400 font-semibold">
-                ${item.price}
+                ${item.price.toFixed(2)} {/* Ensure price is displayed with 2 decimals */}
               </span>
               <Button
                 className="mt-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400 active:bg-yellow-500 focus:bg-yellow-500 transition-none"

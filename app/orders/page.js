@@ -27,6 +27,27 @@ export default function OrdersPage() {
     }
   };
 
+  const handleCancelOrder = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/transactions/${orderDetails.orderId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to cancel order");
+      }
+      setOrderDetails(null);
+      setToast({
+        message: "Order successfully canceled.",
+        type: "success", // Green toast notification
+      });
+    } catch (error) {
+      setToast({
+        message: "Failed to cancel order. Please try again.",
+        type: "error", // Red toast notification
+      });
+    }
+  };
+
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 3000); // Auto-dismiss after 3 seconds
@@ -111,6 +132,12 @@ export default function OrdersPage() {
               <span className="text-gray-400">{new Date(orderDetails.date).toLocaleString()}</span>
             </div>
           </div>
+          <button
+            onClick={handleCancelOrder}
+            className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-400 transition-colors"
+          >
+            Cancel Order
+          </button>
         </div>
       ) : (
         <p className="text-gray-500">Enter an order number to retrieve details.</p>
