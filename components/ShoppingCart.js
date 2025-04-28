@@ -64,7 +64,7 @@ export default function ShoppingCart({
       </button>
       {cartOpen && (
         <div
-          className="absolute right-0 mt-4 w-80 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
+          className="absolute right-0 mt-4 w-96 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden" // Increased width to `w-96`
           style={{ top: 0, maxHeight: "calc(100vh - 32px)", marginTop: "0.5rem" }}
         >
           <div className="p-4 border-b border-gray-200 font-bold flex justify-between items-center bg-yellow-100">
@@ -105,21 +105,19 @@ export default function ShoppingCart({
               ))
             )}
           </div>
-          <div className="p-4 border-t border-gray-200 bg-yellow-50 flex justify-between">
-            <Button
-              size="sm"
+          <div className="p-4 border-t border-gray-200 bg-yellow-50 flex justify-between gap-2">
+            <button
+              className="bg-yellow-500 text-black font-semibold py-1 px-3 rounded-lg hover:bg-yellow-400 transition-colors text-sm"
               onClick={() => router.push("/orders")} // Navigate to the Orders page
             >
               Retrieve Previous Order
-            </Button>
-            <Button
-              color="primary"
-              className="w-full font-bold"
-              disabled={cartSummary.length === 0}
-              onClick={() => router.push("/checkout")} // Navigate to the checkout page
+            </button>
+            <button
+              className="bg-green-500 text-white font-semibold py-1 px-3 rounded-lg hover:bg-green-400 transition-colors text-sm"
+              onClick={() => router.push("/checkout")} // Navigate to the Checkout page
             >
               Checkout
-            </Button>
+            </button>
           </div>
         </div>
       )}

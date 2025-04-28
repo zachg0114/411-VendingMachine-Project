@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function OrdersPage() {
+  const router = useRouter();
   const [orderNumber, setOrderNumber] = useState("");
   const [orderDetails, setOrderDetails] = useState(null);
   const [toast, setToast] = useState(null); // State for toast notifications
@@ -34,6 +36,12 @@ export default function OrdersPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-b from-gray-900 to-black text-white p-6">
+      <button
+        className="absolute top-4 left-4 text-yellow-400 font-bold hover:underline"
+        onClick={() => router.push("/")}
+      >
+        &larr; Back to Home
+      </button>
       <h1 className="text-4xl font-bold text-yellow-400 mb-8">Orders</h1>
       <div className="flex items-center gap-4 mb-8">
         <input
