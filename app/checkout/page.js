@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { cartSummary, clearCart } = useShoppingCart();
+  const [toast, setToast] = useState(null); // State for toast notifications
 
   const subtotal = cartSummary.reduce((sum, item) => sum + item.price * item.count, 0);
   const salesTax = subtotal * 0.05;
@@ -13,6 +15,14 @@ export default function CheckoutPage() {
   const totalItems = cartSummary.reduce((sum, item) => sum + item.count, 0);
 
   const handlePlaceOrder = async () => {
+    if (cartSummary.length === 0) {
+      setToast({
+        message: "Please add items to the cart before attempting to check out.",
+        type: "error", // Red toast notification
+      });
+      return;
+    }
+
     try {
       // Prepare the order data
       const orderData = {
@@ -39,12 +49,20 @@ export default function CheckoutPage() {
         throw new Error("Failed to save the order");
       }
 
+      const savedOrder = await saveResponse.json();
       clearCart();
-      alert("Order placed successfully!");
-      router.push("/");
+
+      // Display success toast with the order number
+      setToast({
+        message: `Order placed successfully! Your Order Number is ${savedOrder.orderId}.`,
+        type: "success", // Green toast notification
+      });
     } catch (error) {
       console.error("Error placing order:", error);
-      alert("Failed to place the order. Please try again.");
+      setToast({
+        message: "Failed to place the order. Please try again.",
+        type: "error", // Red toast notification
+      });
     }
   };
 
@@ -56,14 +74,17 @@ export default function CheckoutPage() {
       >
         &larr; Back to Home
       </button>
+      <h1 className="text-4xl font-bold text-yellow-400 mb-8">Checkout</h1>
       <div className="w-full max-w-4xl border border-gray-700 rounded-3xl shadow-2xl px-8 py-10 bg-gradient-to-br from-gray-800 to-black mt-20">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-4xl font-bold text-yellow-400">Checkout</h1>
+          <h2 className="text-2xl font-bold text-yellow-400">Order Summary</h2>
           <span className="text-sm text-gray-400">Total Items: {totalItems}</span>
         </div>
         <div className="p-4">
           {cartSummary.length === 0 ? (
-            <div className="text-gray-500 text-center py-8">Your cart is empty.</div>
+            <div className="text-red-500 text-center py-8 font-bold">
+              Please add items to the cart before attempting to check out.
+            </div>
           ) : (
             cartSummary.map((item) => (
               <div
@@ -107,6 +128,15 @@ export default function CheckoutPage() {
           Place Order
         </button>
       </div>
+      {toast && (
+        <div
+          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
+            toast.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }
