@@ -14,14 +14,19 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async () => {
     try {
+      // Prepare the order data
       const orderData = {
         total,
-        snackIds: cartSummary.filter((item) => item.type === "snack").map((item) => item.id),
-        drinkIds: cartSummary.filter((item) => item.type === "drink").map((item) => item.id),
-        address: "123 Example St",
+        items: cartSummary.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.count,
+          price: item.price,
+        })),
         date: new Date().toISOString(),
       };
 
+      // Save the order to the backend
       const saveResponse = await fetch("http://localhost:5000/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
