@@ -4,7 +4,7 @@ const cors = require("cors");
 const connectDB = require("./database");
 const drinkRoutes = require("./routes/drinks");
 const snackRoutes = require("./routes/snacks");
-const transactionsRoute = require("./routes/transactions"); // Import transactions route
+const transactionsRoute = require("./routes/transactions");
 
 dotenv.config();
 
@@ -43,9 +43,9 @@ app.get('/api/health', (req, res) => {
 });
 
 // Routes
-app.use("/api/drinks", drinkRoutes);
-app.use("/api/snacks", snackRoutes);
-app.use("/api/transactions", transactionsRoute); // Register transactions route
+app.use("/api/transactions", transactionsRoute);
+app.use("/api/snacks", snackRoutes); // Register snacks route
+app.use("/api/drinks", drinkRoutes); // Register drinks route
 
 // Connect to DB and start server
 connectDB().then(() => {

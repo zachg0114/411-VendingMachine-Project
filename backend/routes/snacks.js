@@ -15,6 +15,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/snacks/:id - Get a specific snack by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const snack = await Snack.findById(req.params.id);
+    if (!snack) {
+      return res.status(404).json({ message: 'Snack not found' });
+    }
+    res.status(200).json(snack);
+  } catch (err) {
+    console.error('Error fetching snack:', err);
+    res.status(500).json({ message: 'Failed to fetch snack' });
+  }
+});
+
 // POST /api/snacks - Add a new snack
 router.post('/', async (req, res) => {
   try {

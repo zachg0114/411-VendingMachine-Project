@@ -14,14 +14,14 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const drink = await Drink.findOne({ id: req.params.id }); // using custom 'id' field
+    const drink = await Drink.findById(req.params.id);
     if (!drink) {
       return res.status(404).json({ message: "Drink not found" });
     }
-    res.json(drink);
+    res.status(200).json(drink);
   } catch (err) {
-    console.error("Error fetching drink by custom id:", err);
-    res.status(500).json({ message: "Failed to fetch drink by id" });
+    console.error("Error fetching drink:", err);
+    res.status(500).json({ message: "Failed to fetch drink" });
   }
 });
 

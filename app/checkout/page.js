@@ -16,12 +16,14 @@ export default function CheckoutPage() {
     try {
       // Prepare the order data
       const orderData = {
+        subtotal,
         total,
         items: cartSummary.map((item) => ({
           id: item.id,
           name: item.name,
           quantity: item.count,
           price: item.price,
+          image: item.image, // Include image link
         })),
         date: new Date().toISOString(),
       };

@@ -10,10 +10,10 @@ mongoose.connection.useDb("products");
 // POST /api/transactions - Add a new transaction
 router.post("/", async (req, res) => {
   try {
-    const { items, total, date } = req.body;
+    const { items, subtotal, total, date } = req.body;
 
     // Validate required fields
-    if (!items || !total || !date) {
+    if (!items || !subtotal || !total || !date) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -21,10 +21,11 @@ router.post("/", async (req, res) => {
     const lastTransaction = await Transaction.findOne().sort({ orderId: -1 });
     const nextOrderId = (lastTransaction?.orderId || 0) + 1;
 
-    // Create a new transaction
+    // Create a new transaction with the next orderId
     const newTransaction = new Transaction({
       orderId: nextOrderId,
       items,
+      subtotal,
       total,
       date,
     });
@@ -45,6 +46,21 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error("Error fetching transactions:", err);
     res.status(500).json({ message: "Failed to fetch transactions" });
+  }
+});
+
+// GET /api/transactions/:orderId - Get a specific transaction by orderId
+router.get("/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const transaction = await Transaction.findOne({ orderId: parseInt(orderId, 10) });
+    if (!transaction) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(200).json(transaction);
+  } catch (err) {
+    console.error("Error fetching transaction:", err);
+    res.status(500).json({ message: "Failed to fetch transaction" });
   }
 });
 
