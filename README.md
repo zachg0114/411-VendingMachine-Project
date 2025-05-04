@@ -2,7 +2,22 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, run the Frontend:
+
+Run at ../411-VendingMachine-Project
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Then, run the backend in a new terminal: 
+
+Run at ../411-VendingMachine-Project/backend
 
 ```bash
 npm run dev
