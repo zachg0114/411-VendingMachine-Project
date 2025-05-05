@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation"; // Import Next.js router
+import { useRouter } from "next/navigation";
 
 export default function ShoppingCart({
   cart,
@@ -12,9 +12,8 @@ export default function ShoppingCart({
   handleClearCart,
 }) {
   const cartRef = useRef(null);
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
 
-  // Close cart dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (cartRef.current && !cartRef.current.contains(event.target)) {
@@ -29,12 +28,11 @@ export default function ShoppingCart({
     };
   }, [cartOpen]);
 
-  // Calculate total count (each item counts as 1)
   const totalCount = cart.length;
 
   return (
     <div
-      className="fixed top-8 right-8 z-50 flex items-center" // Adjusted top value to `top-8`
+      className="fixed top-8 right-8 z-50 flex items-center"
       ref={cartRef}
       style={{ minWidth: 56 }}
     >
@@ -64,7 +62,7 @@ export default function ShoppingCart({
       </button>
       {cartOpen && (
         <div
-          className="absolute right-0 mt-4 w-96 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden" // Increased width to `w-96`
+          className="absolute right-0 mt-4 w-96 bg-white text-black rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
           style={{ top: 0, maxHeight: "calc(100vh - 32px)", marginTop: "0.5rem" }}
         >
           <div className="p-4 border-b border-gray-200 font-bold flex justify-between items-center bg-yellow-100">
@@ -108,13 +106,13 @@ export default function ShoppingCart({
           <div className="p-4 border-t border-gray-200 bg-yellow-50 flex justify-between gap-2">
             <button
               className="bg-yellow-500 text-black font-semibold py-1 px-3 rounded-lg hover:bg-yellow-400 transition-colors text-sm"
-              onClick={() => router.push("/orders")} // Navigate to the Orders page
+              onClick={() => router.push("/orders")}
             >
               Retrieve Previous Order
             </button>
             <button
               className="bg-green-500 text-white font-semibold py-1 px-3 rounded-lg hover:bg-green-400 transition-colors text-sm"
-              onClick={() => router.push("/checkout")} // Navigate to the Checkout page
+              onClick={() => router.push("/checkout")}
             >
               Checkout
             </button>

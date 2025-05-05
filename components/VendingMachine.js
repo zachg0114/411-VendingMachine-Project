@@ -3,14 +3,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Button } from "@nextui-org/react";
 import VendingMachineOption from './VendingMachineOption';
-import { ShoppingCart } from "lucide-react"; // Optional: use a better icon if you have lucide-react installed
+import { ShoppingCart } from "lucide-react"; 
 
 export default function VendingMachine({ initialDrinks }) {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const cartRef = useRef(null);
 
-  // Group cart items by id and count
   const cartSummary = cart.reduce((acc, item) => {
     const found = acc.find(i => i.id === item.id);
     if (found) {
@@ -21,7 +20,6 @@ export default function VendingMachine({ initialDrinks }) {
     return acc;
   }, []);
 
-  // Close cart dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (cartRef.current && !cartRef.current.contains(event.target)) {
@@ -58,7 +56,6 @@ export default function VendingMachine({ initialDrinks }) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black text-white p-6">
-      {/* Cart Icon - fixed and highly visible */}
       <div
         className="fixed top-6 right-8 z-50 flex items-center"
         ref={cartRef}
@@ -70,9 +67,7 @@ export default function VendingMachine({ initialDrinks }) {
           aria-label="View cart"
           style={{ color: "#222" }}
         >
-          {/* Use emoji or icon */}
           <span role="img" aria-label="cart">🛒</span>
-          {/* If using lucide-react: <ShoppingCart size={32} /> */}
           {cart.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs font-bold border-2 border-white">
               {cart.length}
@@ -116,7 +111,6 @@ export default function VendingMachine({ initialDrinks }) {
         )}
       </div>
 
-      {/* Vending Machine Card */}
       <Card className="w-full max-w-4xl border border-gray-700 rounded-3xl shadow-2xl px-8 py-10 bg-gradient-to-br from-gray-800 to-black mt-20">
         <CardHeader className="flex justify-center mb-4">
           <h1 className="text-4xl font-bold text-yellow-400">Vending Machine</h1>

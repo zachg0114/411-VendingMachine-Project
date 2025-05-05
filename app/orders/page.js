@@ -7,7 +7,7 @@ export default function OrdersPage() {
   const router = useRouter();
   const [orderNumber, setOrderNumber] = useState("");
   const [orderDetails, setOrderDetails] = useState(null);
-  const [toast, setToast] = useState(null); // State for toast notifications
+  const [toast, setToast] = useState(null);
 
   const handleSearch = async () => {
     try {
@@ -17,12 +17,12 @@ export default function OrdersPage() {
       }
       const data = await response.json();
       setOrderDetails(data);
-      setToast(null); // Clear any existing toast
+      setToast(null);
     } catch (error) {
       setOrderDetails(null);
       setToast({
         message: "Failed to retrieve order. Your Order Number was invalid.",
-        type: "error", // Red toast notification
+        type: "error",
       });
     }
   };
@@ -38,19 +38,19 @@ export default function OrdersPage() {
       setOrderDetails(null);
       setToast({
         message: "Order successfully canceled.",
-        type: "success", // Green toast notification
+        type: "success",
       });
     } catch (error) {
       setToast({
         message: "Failed to cancel order. Please try again.",
-        type: "error", // Red toast notification
+        type: "error",
       });
     }
   };
 
   useEffect(() => {
     if (toast) {
-      const timer = setTimeout(() => setToast(null), 3000); // Auto-dismiss after 3 seconds
+      const timer = setTimeout(() => setToast(null), 3000);
       return () => clearTimeout(timer);
     }
   }, [toast]);

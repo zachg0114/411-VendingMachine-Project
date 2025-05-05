@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  console.log('GET /data route hit'); // Debug: route handler invoked
+  console.log('GET /data route hit');
   res.json({ message: 'Data accessed successfully' });
 });
 

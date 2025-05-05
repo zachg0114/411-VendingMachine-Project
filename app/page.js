@@ -45,12 +45,12 @@ export default function VendingMachine() {
           <h2 className="text-2xl font-bold mb-4 text-yellow-300">Drinks</h2>
           <VendingMachineOption
             items={drinks}
-            onAddToCart={(item) => addToCart({ ...item, image: item.img })} // Pass image address correctly
+            onAddToCart={(item) => addToCart({ ...item, image: item.img })} 
           />
           <h2 className="text-2xl font-bold mt-8 mb-4 text-yellow-300">Snacks</h2>
           <VendingMachineOption
             items={snacks}
-            onAddToCart={(item) => addToCart({ ...item, image: item.img })} // Pass image address correctly
+            onAddToCart={(item) => addToCart({ ...item, image: item.img })} 
           />
         </div>
       </div>

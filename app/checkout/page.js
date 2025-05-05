@@ -7,7 +7,7 @@ import { useShoppingCart } from "../../context/ShoppingCartContext";
 export default function CheckoutPage() {
   const router = useRouter();
   const { cartSummary, clearCart } = useShoppingCart();
-  const [toast, setToast] = useState(null); // State for toast notifications
+  const [toast, setToast] = useState(null); 
 
   const subtotal = cartSummary.reduce((sum, item) => sum + item.price * item.count, 0);
   const salesTax = subtotal * 0.05;
@@ -18,13 +18,12 @@ export default function CheckoutPage() {
     if (cartSummary.length === 0) {
       setToast({
         message: "Please add items to the cart before attempting to check out.",
-        type: "error", // Red toast notification
+        type: "error", 
       });
       return;
     }
 
     try {
-      // Prepare the order data
       const orderData = {
         subtotal,
         total,
@@ -33,12 +32,11 @@ export default function CheckoutPage() {
           name: item.name,
           quantity: item.count,
           price: item.price,
-          image: item.image, // Include image link
+          image: item.image,
         })),
         date: new Date().toISOString(),
       };
 
-      // Save the order to the backend
       const saveResponse = await fetch("http://localhost:5000/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,17 +50,15 @@ export default function CheckoutPage() {
       const savedOrder = await saveResponse.json();
       clearCart();
 
-      // Display success toast with the order number
       setToast({
         message: `Order placed successfully! Your Order Number is ${savedOrder.orderId}.`,
-        type: "success", // Green toast notification
+        type: "success",
       });
     } catch (error) {
       console.error("Error placing order:", error);
       setToast({
         message: "Failed to place the order. Please try again.",
-        type: "error", // Red toast notification
-      });
+        type: "error", 
     }
   };
 

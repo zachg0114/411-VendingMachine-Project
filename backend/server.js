@@ -15,37 +15,29 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    // Allow requests from any localhost port (e.g., 3000, 3001, etc.)
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow non-browser requests
-      // Allow localhost on any port, or 127.0.0.1
+      if (!origin) return callback(null, true);
       if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
         return callback(null, true);
       }
-      // Optionally allow other origins, e.g., for production
-      // if (/^https:\/\/your-production-domain\.com$/.test(origin)) {
-      //   return callback(null, true);
-      // }
       return callback(new Error('Not allowed by CORS'));
     },
   })
 );
 
-// Debug: Log all incoming requests
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
-// Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
 // Routes
 app.use("/api/transactions", transactionsRoute);
-app.use("/api/snacks", snackRoutes); // Register snacks route
-app.use("/api/drinks", drinkRoutes); // Register drinks route
+app.use("/api/snacks", snackRoutes);
+app.use("/api/drinks", drinkRoutes);
 
 // Connect to DB and start server
 connectDB().then(() => {

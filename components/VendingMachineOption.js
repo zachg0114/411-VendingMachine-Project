@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "./ui/button"; // Use custom Button component
-import { useToast } from "./ui/toast"; // Correct relative path
+import { Button } from "./ui/button";
+import { useToast } from "./ui/toast";
 
 export default function VendingMachineOption({
   items,
   onAddToCart = () => {},
 }) {
-  const { showToast } = useToast(); // Access showToast function
+  const { showToast } = useToast();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -31,14 +31,14 @@ export default function VendingMachineOption({
               <span className="font-bold text-xl">{item.name}</span>
               <span className="text-gray-300">Qty: {item.quantity}</span>
               <span className="text-yellow-400 font-semibold">
-                ${item.price.toFixed(2)} {/* Ensure price is displayed with 2 decimals */}
+                ${item.price.toFixed(2)}
               </span>
               <Button
                 className="mt-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400 active:bg-yellow-500 focus:bg-yellow-500 transition-none"
                 onClick={(e) => {
                   e.preventDefault();
                   onAddToCart(item);
-                  showToast(`${item.name} added to cart!`); // Show toast notification
+                  showToast(`${item.name} added to cart!`);
                 }}
               >
                 Add to Cart
