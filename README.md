@@ -2,7 +2,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the Frontend:
+run the following to install all packages
+```bash
+npm i
+cd backend
+npm i
+```
+
+Then, run the Frontend in one terminal:
 
 Run at ../411-VendingMachine-Project
 ```bash
